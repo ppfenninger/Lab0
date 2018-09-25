@@ -42,20 +42,17 @@ module structuralFullAdder
     input b, 
     input carryin
 );
-    wire andab, andbIn, andaIn;
-    wire orab, orbIn;
-    wire orOut;
 
-    `AND andAB(andab, a, b);
-    `AND andBIN(andbIn, b, carryin);
-    `AND andAIN(andaIn, a, carryin);
+    wire xAorB;
+    wire AandB;
+    wire xAorBandCin;
 
-    `OR or1(orOut, andab, andbIn);
-    `OR or2(carryout, orOut, andaIn);
-
-
-    `XOR xor1(orab, a, b);
-    `XOR xor2(sum, orab, carryin); 
+    `XOR  xorgate(xAorB, a, b);   // OR gate produces AorB from A and B
+    `XOR  xorgate(sum, xAorB, carryin);
+    `AND  andgate(AandB, a, b);
+    `AND  andgate(xAorBandCin, xAorB, carryin);
+    `OR   orgate(carryout, AandB, xAorBandCin);
+    
 endmodule
 
 module FullAdder4bit
